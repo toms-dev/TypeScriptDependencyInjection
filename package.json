@@ -1,0 +1,8 @@
+{
+  "name": "ts-dependency-injection",
+  "version": "0.0.1",
+  "author": "Tom Guillermin",
+  "dependencies": {
+    "reflect-metadata": "^0.1.0"
+  }
+}
