@@ -1,6 +1,7 @@
 #TypeScript dependency injection library
 This library allows you to easily declare and resolve dependencies on class properties using
 TypeScript annotations.
+
 **Notice:** This is a work-in-progress and many features are missing for now (liked named dependencies) and the package.json is incomplete.
 
 *Requirements:*
@@ -18,6 +19,7 @@ Declaring a dependency :
 
 Here, you are declaring that the class *MyClass* needs an instance of *MyDependency* to work properly.
 To provide the dependency to an instance of *MyClass*, you have to create a dependency context in which the dependency will be available.
+To resolve the dependencies: 
 
 	var dep = new MyDependency();
 	var instance = new MyClass();
