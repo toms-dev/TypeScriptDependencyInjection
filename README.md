@@ -18,7 +18,9 @@ Declaring a dependency :
 	}
 
 Here, you are declaring that the class *MyClass* needs an instance of *MyDependency* to work properly.
+
 To provide the dependency to an instance of *MyClass*, you have to create a dependency context in which the dependency will be available.
+
 To resolve the dependencies: 
 
 	var dep = new MyDependency();
@@ -40,5 +42,6 @@ Of course, you can still have dependency inheritance
 	class Dep2 extends MyDependency {
 		[...]
 	}
+	
 *Dep2* instances will be matched for *MyDependency* dependencies during the resolution.
 
