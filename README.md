@@ -45,3 +45,7 @@ Of course, you can still have dependency inheritance
 	
 *Dep2* instances will be matched for *MyDependency* dependencies during the resolution.
 
+##TODO
+
+ - named dependencies
+ - proper *package.json*
