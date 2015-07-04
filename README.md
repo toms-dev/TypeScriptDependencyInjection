@@ -10,19 +10,29 @@ TypeScript annotations.
  - EcmaScript5-compliant engine (nodejs versions >= .0.10 will do fine)
 
 ##Examples
-Declaring a dependency :
+
+First you have to import the library using:
+
+	import Deps = require('./lib/Deps');
+
+
+The, you can declaring a dependency using the following annotation:
 
 	class MyClass {
+
 		@Deps.Inject(MyDependency)
-		public a: MyDependency;
+		public dep: MyDependency;
+
 	}
 
 Here, you are declaring that the class *MyClass* needs an instance of *MyDependency* to work properly.
 
-To provide the dependency to an instance of *MyClass*, you have to create a dependency context in which the dependency will be available.
+To provide an instance of the dependency to an instance of *MyClass*, you have to
+create a dependency context in which the dependency instance will be available.
 
 To resolve the dependencies: 
 
+	// Instantiate everything that has to
 	var dep = new MyDependency();
 	var instance = new MyClass();
 	
