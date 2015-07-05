@@ -5,4 +5,8 @@
 export import Context = require('./Context');
 
 export import Dependency = require('./annotations/Dependency');
-export import Inject = require('./annotations/Inject');
+import Inject = require('./annotations/Inject');
+export var Injection = Inject.Injection;
+export var NamedInjection = Inject.NamedInjection;
+
+console.log("Inject:", Inject);

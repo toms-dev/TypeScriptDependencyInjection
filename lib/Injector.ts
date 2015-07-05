@@ -2,6 +2,7 @@
 
 import 'reflect-metadata';
 import InjectionRequest = require('./InjectionRequest');
+import ProvidedDependency = require('./ProvidedDependency');
 
 class DependencyInjector {
 
@@ -24,24 +25,31 @@ class DependencyInjector {
 		this.injectionListeners.push(il);
 	}
 
-	public provideWith(target, value): void {
+	public provideWith(target: ProvidedDependency, value: ProvidedDependency): void {
 		if (target == undefined || value == undefined) return;
 
-		var proto = Object.getPrototypeOf(target);
+		var proto = Object.getPrototypeOf(target.getInstance());
+
 		var DEP_INJ_REQUESTS_KEY = "dependencyInjection.requests";
-		var requests = Reflect.getMetadata(DEP_INJ_REQUESTS_KEY, proto); //proto.__injectionRequests || [];
-		console.log("Requests of "+proto.constructor.name+":", requests);
+		var requests: InjectionRequest[] = Reflect.getMetadata(DEP_INJ_REQUESTS_KEY, proto); //proto.__injectionRequests || [];
+		if (! requests) return;
+		console.log("Requests of "+proto.constructor.name+":", requests.length);
 
 		// TODO: check if inherited classes work
 
 		for (var i in requests) {
 			var r = requests[i];
 			// If the requested object prototype name match the value prototype name
+			console.log("DEBUG '"+value.getInstance().constructor.name+"' to '" + target.getInstance().constructor.name + "'.");
 			if (r.matches(value)) { //valueTypeName == r.kind) {
-				console.log("\t>> Providing '"+value.constructor.name+"' to '" + target.constructor.name + "'.");
+				console.log("\t>> Providing '"+value.getInstance().constructor.name+"' to '" + target.getInstance().constructor.name + "'.");
+
+				// TODO: check if the dependency is already provided.
+				// TODO: throw exception: AmbiguousContext
 
 				// Perform the loading of the value
-				r.loadingCallback.apply(target, [value]);
+				r.load(target, value);
+				/*r.loadingCallback.apply(target, [value]);*/
 			}
 		}
 	}
@@ -53,8 +61,15 @@ class DependencyInjector {
 		}
 	}
 
+	public provideAllDependenciesWith(target: ProvidedDependency[], value: ProvidedDependency): void {
+		for (var i in target) {
+			var t = target[i];
+			this.provideWith(t, value);
+		}
+	}
+
 	// deprecated
-	triggerDependencyHook(kind: string, value: any): void {
+	/*triggerDependencyHook(kind: string, value: any): void {
 		console.log("Dependency hook triggered: ", kind);
 		for (var i in this.injectionListeners) {
 			var obj = this.injectionListeners[i];
@@ -70,13 +85,13 @@ class DependencyInjector {
 				}
 			}
 		}
-	}
+	}*/
 
-	getInjectionRequestsByPrototypeName(protoName: string): InjectionRequest[] {
+	/*getInjectionRequestsByPrototypeName(protoName: string): InjectionRequest[] {
 		return this.injectionRequests.filter(function(req, i) {
 			return req.prototypeName == protoName;
 		});
-	}
+	}*/
 
 }
 

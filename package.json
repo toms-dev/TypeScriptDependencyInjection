@@ -1,8 +1,31 @@
 {
   "name": "ts-dependency-injection",
   "version": "0.0.1",
-  "author": "Tom Guillermin",
+  "author": "Tom Guillermin <tom@tomsdev.com>",
   "dependencies": {
-    "reflect-metadata": "^0.1.0"
-  }
+    "reflect-metadata": "^0.1.0",
+    "tsd": "^0.6.3"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "keywords": [
+    "dependency",
+    "injection",
+    "typescript",
+    "annotation",
+    "decorator",
+    "framework"
+  ],
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "chai": "^3.0.0"
+  },
+  "files": [
+    /*"LICENSE",
+    "History.md",*/
+    "README.md",
+    "index.js",
+    "lib/"
+  ]
 }

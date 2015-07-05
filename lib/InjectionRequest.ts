@@ -1,35 +1,11 @@
-class InjectionRequest {
 
-	public targetPrototype;
-	public valuePrototype;
+import ProvidedDependency = require('./ProvidedDependency');
 
-	public kind: string;
-	public prototypeName: string;
-	private propertyKey: string;
-	public loadingCallback: Function;
+interface InjectionRequest {
 
-	constructor(propertyKey: string, targetPrototype, valuePrototype) {
-		if (typeof(targetPrototype) == "function") {
-			throw new Error("Should pass the prototype for the target '"+targetPrototype.name+"', not its constructor!");
-		}
-		if (typeof(valuePrototype) == "function") {
-			throw new Error("Should pass the prototype for the value '"+valuePrototype.name+"', not its constructor!");
-		}
+	matches(value: ProvidedDependency): boolean;
+	load(target: ProvidedDependency, value: ProvidedDependency): void;
 
-		this.propertyKey = propertyKey;
-
-		this.targetPrototype = targetPrototype;
-		this.valuePrototype = valuePrototype;
-
-
-		this.loadingCallback = function(value) {
-			this[propertyKey] = value;
-		}
-	}
-
-	public matches(value): boolean {
-		return this.valuePrototype.isPrototypeOf(value);
-	}
 }
 
 export = InjectionRequest;
