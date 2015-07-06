@@ -6,7 +6,7 @@ import ProvidedDependency = require('./ProvidedDependency');
 
 class DependencyInjector {
 
-	public static getRequests(target: ProvidedDependency): InjectionRequest[] {
+	public static getRequests(target:ProvidedDependency):InjectionRequest[] {
 		console.log("Target:", target.getInstance());
 		var instance = target.getInstance();
 
@@ -18,17 +18,18 @@ class DependencyInjector {
 		var proto = Object.getPrototypeOf(instance);
 
 		var DEP_INJ_REQUESTS_KEY = "dependencyInjection.requests";
-		var requests: InjectionRequest[] = Reflect.getMetadata(DEP_INJ_REQUESTS_KEY, proto); //proto.__injectionRequests || [];
+		var requests:InjectionRequest[] = Reflect.getMetadata(DEP_INJ_REQUESTS_KEY, proto); //proto.__injectionRequests || [];
 		if (requests) {
-			console.log("Requests of "+proto.constructor.name+":", requests.length);
+			console.log("Requests of " + proto.constructor.name + ":", requests.length);
 		}
 		return requests ? requests : [];
 	}
 
-	public resolveRequest(r: InjectionRequest, providedInstance: ProvidedDependency, deps: ProvidedDependency[]): void {
-		var matchingDeps: ProvidedDependency[] = [];
+	public resolveRequest(r:InjectionRequest, providedInstance:ProvidedDependency, deps:ProvidedDependency[],
+						  strict:boolean):void {
+		var matchingDeps:ProvidedDependency[] = [];
 		for (var i in deps) {
-			if (! deps.hasOwnProperty(i)) continue;
+			if (!deps.hasOwnProperty(i)) continue;
 			var d = deps[i];
 
 			// Skip self-injection
@@ -42,11 +43,16 @@ class DependencyInjector {
 		console.log(matchingDeps.length + " matching requests for ", providedInstance.getInstance().constructor.name);
 		// Throw an error if more than one dependency matches the request, as the context is ambiguous.
 		if (matchingDeps.length > 1) {
-			throw new Error("Ambiguous context with "+matchingDeps.length+" matching dependencies.");
+			throw new Error("Ambiguous context with " + matchingDeps.length + " matching dependencies.");
 		}
-		// Warn if no provided dependency fulfills the request
+		// Throw an error or warn if no provided dependency fulfills the request
 		else if (matchingDeps.length == 0) {
-			console.log("WARN: "+r.toString()+" was not resolved.");
+			var message = r.toString() + " was not resolved.";
+			if (strict) {
+				throw new Error(message);
+			} else {
+				console.log("WARN: " + message);
+			}
 			return;
 		}
 

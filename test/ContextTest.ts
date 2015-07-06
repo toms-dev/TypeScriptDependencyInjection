@@ -41,7 +41,7 @@ describe("Context testing", () => {
 		dep2 = new Dependency2();
 	});
 
-	it("should respect the context", () => {
+	it("should not inject in another context", () => {
 		c1.addInstance(instance);
 		c1.addInstance(dep1);
 		c2.addInstance(dep2);
@@ -51,7 +51,18 @@ describe("Context testing", () => {
 
 		assert.equal(instance.protoDep1, dep1, "protoDep1 has the right value");
 		assert.isUndefined(instance.protoDep2, "protoDep2 is undefined");
+	});
 
+	it("should throw an error if a dependency is not met, only in strict mode", () => {
+		c1.addInstance(instance);
+
+		chai.expect(() => {
+			c1.resolve();
+		}).to.not.throw(Error);
+
+		chai.expect(() => {
+			c1.resolveStrict();
+		}).to.throw(Error);
 	});
 
 });

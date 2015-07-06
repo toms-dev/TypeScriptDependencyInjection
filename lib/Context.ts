@@ -32,7 +32,6 @@ class DependencyInjectionContext {
 	constructor() {
 		this.providedDependencies = [];
 		this.injector = new DependencyInjector();
-		this.requests = [];
 	}
 
 	private loadRequests(dep: ProvidedDependency): void {
@@ -57,8 +56,9 @@ class DependencyInjectionContext {
 		this.providedDependencies.push(new NamedProvidedDependency(instance, name));
 	}
 
-	public resolve():void {
+	public resolve(strict = false):void {
 		// Build the request list
+		this.requests = [];
 		for (var i in this.providedDependencies) {
 			if (! this.providedDependencies.hasOwnProperty(i)) continue;
 			var dep = this.providedDependencies[i];
@@ -69,8 +69,12 @@ class DependencyInjectionContext {
 		for (var i in this.requests) {
 			if (! this.requests.hasOwnProperty(i)) continue;
 			var r = this.requests[i];
-			this.injector.resolveRequest(r.request, r.instance, this.providedDependencies);
+			this.injector.resolveRequest(r.request, r.instance, this.providedDependencies, strict);
 		}
+	}
+
+	public resolveStrict(): void {
+		this.resolve(true);
 	}
 
 }
