@@ -19,12 +19,12 @@ TypeScript annotations.
 ##Examples
 
 First you have to import the library using:
-```
+```TypeScript
 	import Deps = require('./lib/Deps');
 ```
 
 Then, you can declare a dependency using the following annotation:
-```
+```TypeScript
 class MyClass {
 
 	@Deps.Inject(MyDependency)
@@ -38,7 +38,7 @@ To provide an instance of the dependency to an instance of *MyClass*, you have t
 create a **dependency context** in which the dependency instance will be available.
 
 To create the context and resolve the dependencies: 
-```
+```TypeScript
 	// Instantiate everything that has to
 	var dep = new MyDependency();
 	var instance = new MyClass();
@@ -55,7 +55,7 @@ To create the context and resolve the dependencies:
 The dependency matching is performed on the prototypes.
 
 Of course, you can still have dependency inheritance 
-```
+```TypeScript
 	class Dep2 extends MyDependency {
 		[...]
 	}
@@ -64,14 +64,14 @@ Of course, you can still have dependency inheritance
 
 ### Named dependencies
 You have the ability to give names to dependencies to avoid collisions. You have to use another annotation, `NamedInjection`:
-```
+```TypeScript
 class MyClass {
 	@Deps.NamedInjection("some_name", MyDependency)
 	private attr: MyDependency;
 }
 ```
 Then, you can add the values to the context by specifying their name:
-```
+```TypeScript
 context.addNamedValue(new MyDependency(), "some_name");
 // or an equivalent syntax:
 context.addValue(new MyDependency(), "some_name");
@@ -80,13 +80,13 @@ context.addValue(new MyDependency(), "some_name");
 ### Injecting primitives
 You can inject primitive types by name the same way you do with class instances.
 The only thing you have to do is adding them to the context:
-```
-context.addValue(1, "attr1");				// number
-context.addValue("message", "attr2");		// string
-context.addValue(true, "attr3");			// boolean
-context.addValue(function() {				// function
-	console.log("Hello, I was injected !");
-}, "attr4");
+```TypeScript
+	context.addValue(1, "attr1");				// number
+	context.addValue("message", "attr2");		// string
+	context.addValue(true, "attr3");			// boolean
+	context.addValue(function() {				// function
+		console.log("Hello, I was injected !");
+	}, "attr4");
 ```
 Currently, there no way of specifying a primitive type in the annotation (like this `@Deps.NamedInjection("attr1", "number")` but this feature is **in the todo list**!
 
@@ -105,7 +105,7 @@ There are two probable causes of ambiguous context error :
 ### Self-injection & same-name injection requests
 The injection system will **prevent an instance from injecting into itself** (_"why ?"_).
 The benefit of this is that it will **allow** you to have **two instances with the same name and same type in the same context**, to make them cross-inject into one another,
-```
+```TypeScript
 class SelfInjectingClass {
 	@Deps.NamedInjection("a_friend", SelfInjectingClass)
 	public dep: SelfInjectingClass;
@@ -120,9 +120,9 @@ context.resolve(); 	// no error! :)
 ```
 
 **Note.** It is also possible to use an non-named injection annotation:
-```
-@Deps.Injection(SelfInjectingClass)
-public dep: SelfInjectingClass;
+```TypeScript
+	@Deps.Injection(SelfInjectingClass)
+	public dep: SelfInjectingClass;
 ```
 
 
