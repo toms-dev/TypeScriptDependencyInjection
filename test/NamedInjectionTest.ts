@@ -36,7 +36,19 @@ class SelfInjectingClass {
 	public dep: SelfInjectingClass;
 }
 
-// TODO: inject twice the same namedDep => throw error
+class AnyClass {
+
+	@Deps.NamedInjection("attr1")
+	public attr1: any;
+
+	@Deps.NamedInjection("attr2")
+	public attr2: any;
+
+	@Deps.NamedInjection("attr3")
+	public attr3: any;
+
+}
+
 
 describe("NamedInjection unit test", () => {
 	var context: Deps.Context,
@@ -101,6 +113,29 @@ describe("NamedInjection unit test", () => {
 		context.resolve();
 
 		assert.equal(instance.dep1, dep1, "The dependence is injected");
+	});
+
+	it("should be able to inject basic types", () => {
+		var anyInstance = new AnyClass();
+		context.addInstance(anyInstance);
+		context.addInstance(1, "attr1");
+		context.addInstance("message", "attr2");
+
+		// The spy **replaces** the functions, it does not wrap it
+		var fakeCallback = sinon.spy(function() {
+		});
+
+		context.addInstance(fakeCallback, "attr3");
+
+		context.resolve();
+
+		assert.isNumber(anyInstance.attr1, "attr1 is number");
+		assert.isString(anyInstance.attr2, "attr2 is string");
+		assert.isDefined(anyInstance.attr3, "attr3 is defined");
+		assert.isFunction(anyInstance.attr3, "attr3 is a function");
+		anyInstance.attr3();
+
+		assert.isTrue(fakeCallback.calledOnce, "fakeCallback is called through attr3");
 	});
 
 	it("should throw an exception if the context is ambiguous because of the names", () => {

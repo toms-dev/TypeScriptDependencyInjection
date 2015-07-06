@@ -7,7 +7,15 @@ import ProvidedDependency = require('./ProvidedDependency');
 class DependencyInjector {
 
 	public static getRequests(target: ProvidedDependency): InjectionRequest[] {
-		var proto = Object.getPrototypeOf(target.getInstance());
+		console.log("Target:", target.getInstance());
+		var instance = target.getInstance();
+
+		// Skip primitive objects
+		var typeofInstance = typeof(instance);
+		var isPrimitive = typeofInstance == "number" || typeofInstance == "string";
+		if (isPrimitive) return [];
+
+		var proto = Object.getPrototypeOf(instance);
 
 		var DEP_INJ_REQUESTS_KEY = "dependencyInjection.requests";
 		var requests: InjectionRequest[] = Reflect.getMetadata(DEP_INJ_REQUESTS_KEY, proto); //proto.__injectionRequests || [];
