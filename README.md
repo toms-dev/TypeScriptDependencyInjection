@@ -46,8 +46,8 @@ To create the context and resolve the dependencies:
 	var context = new Deps.Context();
 	
 	// Provide the values to the context
-	context.add(dep);
-	context.add(instance);
+	context.addValue(dep);
+	context.addValue(instance);
 	
 	// Resolve all the dependencies
 	context.resolve();
@@ -104,7 +104,7 @@ There are two probable causes of ambiguous context error :
 
 ### Self-injection & same-name injection requests
 The injection system will **prevent an instance from injecting into itself** (_"why ?"_).
-The benefit of this is that it will **allow** you to have **two instances with the same name and same type** in the **same context**, to make them **cross-inject** into one another,
+The benefit of this is that it will **allow** you to have **two instances with the same name and same type in the same context**, to make them cross-inject into one another,
 ```
 class SelfInjectingClass {
 	@Deps.NamedInjection("a_friend", SelfInjectingClass)
