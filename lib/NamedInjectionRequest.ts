@@ -36,6 +36,16 @@ class NamedInjectionRequest extends BaseInjectionRequest implements InjectionReq
 		// TODO: don't match if the instance is "this" ? -> add a parameter to the method
 		return nameMatch && prototypeMatch;
 	}
+
+
+	public toString():string {
+		var suffix = "";
+		if (this.valuePrototype) {
+			suffix += this.valuePrototype.constructor.name+"@";
+		}
+		suffix += this.valueName;
+		return super.toString()+"="+suffix;
+	}
 }
 
 export = NamedInjectionRequest;

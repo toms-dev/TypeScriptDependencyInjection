@@ -7,6 +7,7 @@ import ProvidedDependency = require('./ProvidedDependency');
  */
 class BaseInjectionRequest {
 
+	protected targetPrototype: Object;
 	private propertyKey: string;
 	private loadingCallback: Function;
 
@@ -15,6 +16,7 @@ class BaseInjectionRequest {
 			throw new Error("Should pass the prototype for the target '"+targetPrototype.name+"', not its constructor!");
 		}
 
+		this.targetPrototype = targetPrototype;
 		this.propertyKey = propertyKey;
 
 		this.loadingCallback = function(value) {
@@ -29,6 +31,13 @@ class BaseInjectionRequest {
 
 	public load(target: ProvidedDependency, value: ProvidedDependency): void {
 		this.loadingCallback.apply(target.getInstance(), [value.getInstance()]);
+	}
+
+	public toString(): string {
+		// TODO: @Class to add a .getClassName method ?
+		var requestClassName = (<any> this.constructor).name;
+		var targetClassName = (<any> this.targetPrototype).constructor.name;
+		return requestClassName+"@"+targetClassName+"."+this.propertyKey;
 	}
 }
 
