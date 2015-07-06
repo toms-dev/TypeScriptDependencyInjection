@@ -34,7 +34,6 @@ class BaseInjectionRequest {
 	}
 
 	public toString(): string {
-		// TODO: @Class to add a .getClassName method ?
 		var requestClassName = (<any> this.constructor).name;
 		var targetClassName = (<any> this.targetPrototype).constructor.name;
 		return requestClassName+"@"+targetClassName+"."+this.propertyKey;
