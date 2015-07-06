@@ -22,8 +22,6 @@
     "chai": "^3.0.0"
   },
   "files": [
-    /*"LICENSE",
-    "History.md",*/
     "README.md",
     "index.js",
     "lib/"
