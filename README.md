@@ -72,9 +72,9 @@ class MyClass {
 ```
 Then, you can add the values to the context by specifying their name:
 ```TypeScript
-context.addNamedValue(new MyDependency(), "some_name");
-// or an equivalent syntax:
-context.addValue(new MyDependency(), "some_name");
+	context.addNamedValue(new MyDependency(), "some_name");
+	// or an equivalent syntax:
+	context.addValue(new MyDependency(), "some_name");
 ```
 
 ### Injecting primitives
@@ -119,7 +119,7 @@ context.addValue(self2, "a_friend");
 context.resolve(); 	// no error! :)
 ```
 
-**Note.** It is also possible to use an non-named injection annotation:
+**Note.** It is also possible to use an non-named injection annotation in the class declaration:
 ```TypeScript
 	@Deps.Injection(SelfInjectingClass)
 	public dep: SelfInjectingClass;
