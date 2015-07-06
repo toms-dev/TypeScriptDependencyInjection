@@ -1,5 +1,5 @@
 #TypeScript dependency injection library
-This library allows you to easily declare and resolve dependencies on class properties using
+This library allows you to easily declare and resolve dependencies on class attributes using
 TypeScript annotations.
 
 **Notice:** This is a work-in-progress and many features are missing for now (liked named dependencies) and the package.json is incomplete.
