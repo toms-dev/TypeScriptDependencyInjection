@@ -16,21 +16,24 @@ export function Injection(typeToInject) {
 }
 
 export function NamedInjection(name, typeToInject?) {
+	var proto = typeToInject ? typeToInject.prototype : null;
 	return function (target:Object, propertyKey:string | symbol) {
-		addNamedInjectionRequest(target, name, propertyKey, typeToInject.prototype);
+		addNamedInjectionRequest(target, name, propertyKey, proto);
 	}
 }
 
 // TODO: NamedInjection
 
-function addInjectionRequest(targetPrototype, injectionPrototype, propertyKey:string | symbol, request:InjectionRequest) {
+function addInjectionRequest(targetPrototype, injectionPrototype, request:InjectionRequest) {
 	var proto:any = targetPrototype;
 	var protoName = targetPrototype.constructor.name;
-	var injectionName = injectionPrototype.constructor.name;
+	var injectionName = injectionPrototype ? injectionPrototype.constructor.name : null;
 
 	// Check that the names are valid
+	//
 	if (!protoName) throw new Error("Incorrect prototype! No name found!");
-	if (!injectionName) throw new Error("Incorrect prototype! No name found!");
+	// Throw error if the 'injectionPrototype' is provided but the name is a false-value
+	if (injectionPrototype && !injectionName) throw new Error("Incorrect prototype! No name found!");
 
 	// Register the injection request
 	var protoInjectionRequests:InjectionRequest[];
@@ -47,10 +50,10 @@ function addInjectionRequest(targetPrototype, injectionPrototype, propertyKey:st
 
 function addPrototypeInjectionRequest(targetPrototype, injectionPrototype, propertyKey) {
 	var request = new PrototypeInjectionRequest(propertyKey, targetPrototype, injectionPrototype);
-	addInjectionRequest(targetPrototype, injectionPrototype, propertyKey, request);
+	addInjectionRequest(targetPrototype, injectionPrototype, request);
 }
 
 function addNamedInjectionRequest(targetPrototype, name:string, propertyKey:string | symbol, injectionPrototype) {
 	var request = new NamedInjectionRequest(<string> propertyKey, targetPrototype, name, injectionPrototype);
-	addInjectionRequest(targetPrototype, injectionPrototype, propertyKey, request);
+	addInjectionRequest(targetPrototype, injectionPrototype, request);
 }

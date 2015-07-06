@@ -13,6 +13,8 @@ class Dependency1 {
 }
 class Dependency2 {
 }
+class SubDependency1 extends Dependency1 {
+}
 
 class MyClass {
 	@Deps.Injection(Dependency1)
@@ -25,11 +27,11 @@ class MyChildClass extends MyClass {
 
 class SelfInjectingClass {
 	@Deps.Injection(SelfInjectingClass)
-	public dep: SelfInjectingClass;
+	public dep:SelfInjectingClass;
 }
 
 describe("PrototypeInjection unit test", () => {
-	var context: Deps.Context,
+	var context:Deps.Context,
 		instance:MyClass,
 		dep1:Dependency1,
 		dep2:Dependency2;
@@ -82,7 +84,15 @@ describe("PrototypeInjection unit test", () => {
 		chai.expect(() => {
 			context.resolve();
 		}).to.throw();
-		// TODO: case where the same prototype is provided twice
+	});
+	it("should throw an exception if the context is ambiguous because of inheritance", () => {
+		context.addInstance(instance);
+		context.addInstance(dep1);
+		context.addInstance(new SubDependency1());
+
+		chai.expect(() => {
+			context.resolve();
+		}).to.throw();
 	});
 
 	it("should not inject itself", () => {

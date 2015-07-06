@@ -42,13 +42,23 @@ class DependencyInjectionContext {
 	public addInstance(instance:any, name?: string):void {
 		if (name) {
 			console.log("Adding named dep: ", name);
-			this.providedDependencies.push(new NamedProvidedDependency(instance, name));
+			this.addNamedInstance(instance, name);
+			//this.providedDependencies.push(new NamedProvidedDependency(instance, name));
 		} else {
 			this.providedDependencies.push(new PrototypeProvidedDependency(instance));
 		}
 	}
 
 	public addNamedInstance(instance:any, name:string):void {
+		/*// Check if there's already an instance named like that
+		for (var i in this.providedDependencies) {
+			if (! this.providedDependencies.hasOwnProperty(i)) continue;
+			var d = this.providedDependencies[i];
+			if (d instanceof NamedProvidedDependency) {
+				if (name == d.getName()) throw new Error("Ambiguous Context : name '"+name+"' is already registered.")
+			}
+		}*/
+		// Store the dependency
 		this.providedDependencies.push(new NamedProvidedDependency(instance, name));
 	}
 

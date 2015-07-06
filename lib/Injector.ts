@@ -88,6 +88,7 @@ class DependencyInjector {
 				matchingDeps.push(d);
 			}
 		}
+		console.log(matchingDeps.length + " matching requests for ", providedInstance.getInstance().constructor.name);
 		// Throw an error if more than one dependency matches the request, as the context is ambiguous.
 		if (matchingDeps.length > 1) {
 			throw new Error("Ambiguous context with "+matchingDeps.length+" matching dependencies.");
