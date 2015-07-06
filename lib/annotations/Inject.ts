@@ -1,7 +1,3 @@
-/**
- * Created by Tom on 02/07/2015.
- */
-
 /// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts" />
 
 import 'reflect-metadata';
@@ -22,10 +18,7 @@ export function NamedInjection(name, typeToInject?) {
 	}
 }
 
-// TODO: NamedInjection
-
 function addInjectionRequest(targetPrototype, injectionPrototype, request:InjectionRequest) {
-	var proto:any = targetPrototype;
 	var protoName = targetPrototype.constructor.name;
 	var injectionName = injectionPrototype ? injectionPrototype.constructor.name : null;
 

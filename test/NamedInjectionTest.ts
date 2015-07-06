@@ -47,6 +47,9 @@ class AnyClass {
 	@Deps.NamedInjection("attr3")
 	public attr3: any;
 
+	@Deps.NamedInjection("attr4")
+	public attr4: any;
+
 }
 
 
@@ -126,6 +129,7 @@ describe("NamedInjection unit test", () => {
 		});
 
 		context.addInstance(fakeCallback, "attr3");
+		context.addInstance(true, "attr4");
 
 		context.resolve();
 
@@ -145,7 +149,6 @@ describe("NamedInjection unit test", () => {
 		chai.expect(() => {
 			context.resolve();
 		}).to.throw();
-		// TODO: case where the same prototype is provided twice
 	});
 
 	it("should not inject itself", () => {

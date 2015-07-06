@@ -11,8 +11,7 @@ class DependencyInjector {
 		var instance = target.getInstance();
 
 		// Skip primitive objects
-		var typeofInstance = typeof(instance);
-		var isPrimitive = typeofInstance == "number" || typeofInstance == "string";
+		var isPrimitive = typeof(instance) != "object";
 		if (isPrimitive) return [];
 
 		var proto = Object.getPrototypeOf(instance);

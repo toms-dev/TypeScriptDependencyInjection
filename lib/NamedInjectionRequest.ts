@@ -33,7 +33,7 @@ class NamedInjectionRequest extends BaseInjectionRequest implements InjectionReq
 
 		var nameMatch = this.valueName == namedDep.getName();
 		var prototypeMatch = this.valuePrototype ? this.valuePrototype.isPrototypeOf(value.getInstance()) : true;
-		// TODO: don't match if the instance is "this" ? -> add a parameter to the method
+
 		return nameMatch && prototypeMatch;
 	}
 

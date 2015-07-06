@@ -22,7 +22,6 @@ class PrototypeInjectionRequest extends BaseInjectionRequest implements Injectio
 	}
 
 	public matches(value: ProvidedDependency): boolean {
-		// TODO: don't match if the instance is "this" ? -> add a parameter to the method
 		return this.valuePrototype.isPrototypeOf(value.getInstance());
 	}
 }
