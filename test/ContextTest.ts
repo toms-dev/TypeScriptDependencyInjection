@@ -42,9 +42,9 @@ describe("Context testing", () => {
 	});
 
 	it("should not inject in another context", () => {
-		c1.addInstance(instance);
-		c1.addInstance(dep1);
-		c2.addInstance(dep2);
+		c1.addValue(instance);
+		c1.addValue(dep1);
+		c2.addValue(dep2);
 
 		c1.resolve();
 		c2.resolve();
@@ -54,7 +54,7 @@ describe("Context testing", () => {
 	});
 
 	it("should throw an error if a dependency is not met, only in strict mode", () => {
-		c1.addInstance(instance);
+		c1.addValue(instance);
 
 		chai.expect(() => {
 			c1.resolve();

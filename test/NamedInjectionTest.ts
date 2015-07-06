@@ -65,26 +65,26 @@ describe("NamedInjection unit test", () => {
 		dep2 = new Dependency2();
 	});
 	it("should be injected when the prototype matches", () => {
-		context.addInstance(instance);
-		context.addNamedInstance(dep1, "my_dep1");
-		context.addNamedInstance(dep2, "my_dep2");
+		context.addValue(instance);
+		context.addNamedValue(dep1, "my_dep1");
+		context.addNamedValue(dep2, "my_dep2");
 		context.resolve();
 
 		assert.equal(instance.dep1, dep1, "The dependence is injected");
 	});
 
 	it("should not be injected when the name does not match", () => {
-		context.addInstance(instance);
-		context.addInstance(dep1, "derp");
-		context.addInstance(dep2, "hello");
+		context.addValue(instance);
+		context.addValue(dep1, "derp");
+		context.addValue(dep2, "hello");
 
 		context.resolve();
 		assert.isUndefined(instance.dep1, "The dependence is undefined");
 	});
 
 	it("should not be injected when the prototype is different, even with matching name", () => {
-		context.addInstance(instance);
-		context.addInstance(dep2, "my_dep1");
+		context.addValue(instance);
+		context.addValue(dep2, "my_dep1");
 
 		context.resolve();
 		assert.isUndefined(instance.dep1, "The dependence is undefined");
@@ -92,18 +92,18 @@ describe("NamedInjection unit test", () => {
 
 	it("should inject a named provided dependency into an PrototypeInjectionRequest", () => {
 		var instanceProto = new MyClassUsingPrototypeInjection();
-		context.addInstance(instanceProto);
-		context.addInstance(dep1, "some_random_name");
+		context.addValue(instanceProto);
+		context.addValue(dep1, "some_random_name");
 		context.resolve();
 
 		assert.equal(instanceProto.dep, dep1);
 	});
 
 	it("should only inject for the name that matches", () => {
-		context.addInstance(instance);
-		context.addInstance(new Dependency1(), "some_name"); // add a non-matching dependency to the context
-		context.addInstance(dep1, "my_dep1");
-		context.addInstance(new Dependency1(), "some_other_name"); // add a non-matching dependency to the context
+		context.addValue(instance);
+		context.addValue(new Dependency1(), "some_name"); // add a non-matching dependency to the context
+		context.addValue(dep1, "my_dep1");
+		context.addValue(new Dependency1(), "some_other_name"); // add a non-matching dependency to the context
 		context.resolve();
 
 		assert.equal(instance.dep1, dep1, "The right dependence is injected");
@@ -111,8 +111,8 @@ describe("NamedInjection unit test", () => {
 
 	it("should also inject if the target instance is a child of the annotated class", () => {
 		instance = new MyChildClass();
-		context.addInstance(instance);
-		context.addInstance(dep1, "my_dep1");
+		context.addValue(instance);
+		context.addValue(dep1, "my_dep1");
 		context.resolve();
 
 		assert.equal(instance.dep1, dep1, "The dependence is injected");
@@ -120,16 +120,16 @@ describe("NamedInjection unit test", () => {
 
 	it("should be able to inject basic types", () => {
 		var anyInstance = new AnyClass();
-		context.addInstance(anyInstance);
-		context.addInstance(1, "attr1");
-		context.addInstance("message", "attr2");
+		context.addValue(anyInstance);
+		context.addValue(1, "attr1");
+		context.addValue("message", "attr2");
 
 		// The spy **replaces** the functions, it does not wrap it
 		var fakeCallback = sinon.spy(function() {
 		});
 
-		context.addInstance(fakeCallback, "attr3");
-		context.addInstance(true, "attr4");
+		context.addValue(fakeCallback, "attr3");
+		context.addValue(true, "attr4");
 
 		context.resolve();
 
@@ -143,9 +143,9 @@ describe("NamedInjection unit test", () => {
 	});
 
 	it("should throw an exception if the context is ambiguous because of the names", () => {
-		context.addInstance(instance);
-		context.addInstance(dep1, "my_dep1");
-		context.addInstance(new Dependency1(), "my_dep1");
+		context.addValue(instance);
+		context.addValue(dep1, "my_dep1");
+		context.addValue(new Dependency1(), "my_dep1");
 		chai.expect(() => {
 			context.resolve();
 		}).to.throw();
@@ -153,7 +153,7 @@ describe("NamedInjection unit test", () => {
 
 	it("should not inject itself", () => {
 		var self1 = new SelfInjectingClass();
-		context.addInstance(self1, "a_friend");
+		context.addValue(self1, "a_friend");
 		context.resolve();
 
 		assert.isUndefined(self1.dep);
@@ -162,22 +162,22 @@ describe("NamedInjection unit test", () => {
 	it("should not create an ambiguous context thanks to self-injection mecanism", () => {
 		var self1 = new SelfInjectingClass();
 		var self2 = new SelfInjectingClass();
-		context.addInstance(self1, "a_friend");
-		context.addInstance(self2, "a_friend");
+		context.addValue(self1, "a_friend");
+		context.addValue(self2, "a_friend");
 		context.resolve();
 		assert.equal(self1.dep, self2);
 		assert.equal(self2.dep, self1);
 	});
 
 	it("should allow the resolution of dependencies that has the same names but different prototypes", () => {
-		context.addInstance(instance);
-		context.addInstance(new Dependency1(), "TEST");
-		context.addNamedInstance(dep2, "my_dep1");
-		context.addInstance(new Dependency1(), "TEST");
-		context.addInstance(dep1, "my_dep1");	// this one should be injected
-		context.addInstance(new Dependency1(), "TEST");
-		context.addNamedInstance(dep2, "my_dep1");
-		context.addInstance(new Dependency1(), "TEST");
+		context.addValue(instance);
+		context.addValue(new Dependency1(), "TEST");
+		context.addNamedValue(dep2, "my_dep1");
+		context.addValue(new Dependency1(), "TEST");
+		context.addValue(dep1, "my_dep1");	// this one should be injected
+		context.addValue(new Dependency1(), "TEST");
+		context.addNamedValue(dep2, "my_dep1");
+		context.addValue(new Dependency1(), "TEST");
 		context.resolve();
 
 		assert.equal(instance.dep1, dep1, "The right one should be injected");

@@ -41,17 +41,17 @@ class DependencyInjectionContext {
 		});
 	}
 
-	public addInstance(instance:any, name?: string):void {
+	public addValue(instance:any, name?: string):void {
 		if (name) {
 			console.log("Adding named dep: ", name);
-			this.addNamedInstance(instance, name);
+			this.addNamedValue(instance, name);
 			//this.providedDependencies.push(new NamedProvidedDependency(instance, name));
 		} else {
 			this.providedDependencies.push(new PrototypeProvidedDependency(instance));
 		}
 	}
 
-	public addNamedInstance(instance:any, name:string):void {
+	public addNamedValue(instance:any, name:string):void {
 		// Store the dependency
 		this.providedDependencies.push(new NamedProvidedDependency(instance, name));
 	}
