@@ -5,6 +5,8 @@ import InjectionRequest = require('../InjectionRequest');
 import PrototypeInjectionRequest = require('../PrototypeInjectionRequest');
 import NamedInjectionRequest = require('../NamedInjectionRequest');
 
+import Singleton = require('../Singleton');
+
 export function Injection(typeToInject) {
 	return function (target:Object, propertyKey:string | symbol) {
 		addPrototypeInjectionRequest(target, typeToInject.prototype, propertyKey);
@@ -15,6 +17,37 @@ export function NamedInjection(name, typeToInject?) {
 	var proto = typeToInject ? typeToInject.prototype : null;
 	return function (target:Object, propertyKey:string | symbol) {
 		addNamedInjectionRequest(target, name, propertyKey, proto);
+	}
+}
+
+export function AutoInject(dependencyClass) {
+	console.log("Auto inject");
+	if (! dependencyClass) throw new Error("Missing parameter!");
+	return function (prototype, propertyKey) {
+		var singletons:any[] = Reflect.getOwnMetadata("singletonInjectors", prototype) || [];
+		singletons.push(function() {
+			this[propertyKey] = Singleton.getSingleton(dependencyClass).get();
+		});
+		Reflect.defineMetadata("singletonInjectors", singletons, prototype);
+
+		// TODO: overload constructor?
+	}
+}
+
+export function AutoLoad(constructor): any {
+	console.log("Auto load...");
+	var proto = constructor.prototype;
+	var autoLoad = function(singletonInjectors, target) {
+		for (var i in singletonInjectors) {
+			if (! singletonInjectors.hasOwnProperty(i)) continue;
+			var s = singletonInjectors[i];
+			s.apply(target);
+		}
+	};
+	return function() {
+		var singletonInjectors = Reflect.getOwnMetadata("singletonInjectors", proto) || [];
+		autoLoad(singletonInjectors, this);
+		constructor.apply(this, arguments)
 	}
 }
 

@@ -163,7 +163,7 @@ Tom Guillermin, [http://www.tomsdev.com](www.tomsdev.com)
  - ~~named dependencies~~
  - ~~strict context resolution (optional)~~
  - ~~unit tests~~
- -  - primitive injection by type declaration ("number"/"string"/"boolean")
+ -  primitive injection by type declaration ("number"/"string"/"boolean")
  -  singleton dependency magic injection
  - context extension : be able to "copy" a context, and add values into this "child" context, without reaffecting 
  values from  the parent context. Example: server context -> match context -> player context
