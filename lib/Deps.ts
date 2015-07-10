@@ -8,5 +8,8 @@ export import Dependency = require('./annotations/Dependency');
 import Inject = require('./annotations/Inject');
 export var Injection = Inject.Injection;
 export var NamedInjection = Inject.NamedInjection;
+export var AutoInject = Inject.AutoInject;
+export var DirectLoad = Inject.DirectLoad;
+export import Singleton = require('./annotations/SingletonAnnotation');
 
 console.log("Inject:", Inject);

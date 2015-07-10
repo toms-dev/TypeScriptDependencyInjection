@@ -1,30 +1,44 @@
 #TypeScript dependency injection library
-This library allows you to easily declare and resolve dependencies on class properties using
-TypeScript annotations.
-
-**Notice:** This is a work-in-progress and many features are missing for now (liked named dependencies) and the package.json is incomplete.
-
-##Features
-
-- dependency resolution by prototype
-- dependency resolution by name
-- declaration of different contexts to avoid collisions
-
+This library allows you to easily declare and resolve dependencies in your classes attributes using eye-candy TypeScript annotations.
 
 ##Requirements
 
  - TypeScript compiler 1.5 or higher
  - EcmaScript5-compliant engine (nodejs versions >= .0.10 will do fine)
+ 
+##Who is it for?
 
-##Examples
+This library is primarily aimed at framework developers but any programmers that want clean and concise code will surely enjoy it too! It's a great way to reduce redundant boilerplate code.
+
+**Notice:** This is a work-in-progress and many features are missing for now (liked named dependencies) and the package.json is incomplete.
+
+**Side-note about the terminology:** The official term of the `@Something` syntax in TypeScript is "decorator", but I might inadvertently call it "annotation" quite frequently (like in Java for instance).
+
+##So... dependency injection?
+
+Dependency injection allows you to reduce code coupling by **dynamically setting ("injecting") variables** where they need to be.
+
+For example, let's say I'm writing some controllers and I want to be able to send emails from them. I can write an `EmailService` class and provide dynamically its instances to any controller that requests it.
+Dependency injection will allow me to have a clean and unified syntax for both requesting and providing the `EmailService` (see below for an example).
+
+##Features
+
+- **Powerful**. Resolves dependencies by prototype and/or name.
+- **Concise**. Using TypeScript annotations will be a real pleasure for your eyes. I promise.
+- **Expressive**. By declaring multiple contexts, you have fine control of the resolution process/ 
+- **Safe**. The solver automatically detects ambiguous contexts and prevent unexpected behaviors.
+- declaration of different contexts to avoid collisions
+
+
+##Getting started
 
 First you have to import the library using:
-```
+```TypeScript
 	import Deps = require('./lib/Deps');
 ```
 
 Then, you can declare a dependency using the following annotation:
-```
+```TypeScript
 class MyClass {
 
 	@Deps.Inject(MyDependency)
@@ -35,10 +49,12 @@ class MyClass {
 Here, you are declaring that instances of *MyClass* needs an instance of *MyDependency* to work properly.
 
 To provide an instance of the dependency to an instance of *MyClass*, you have to
-create a **dependency context** in which the dependency instance will be available.
+create a **dependency context**.
+A context is a way to explicitly define which values are available during the resolution.
 
+All you have to do is add all the values that participates in the context and run the resolution.
 To create the context and resolve the dependencies: 
-```
+```TypeScript
 	// Instantiate everything that has to
 	var dep = new MyDependency();
 	var instance = new MyClass();
@@ -52,43 +68,57 @@ To create the context and resolve the dependencies:
 	// Resolve all the dependencies
 	context.resolve();
 ```
-The dependency matching is performed on the prototypes.
-
-Of course, you can still have dependency inheritance 
-```
-	class Dep2 extends MyDependency {
-		[...]
-	}
-```	
-*Dep2* instances will be matched for *MyDependency* dependencies during the resolution.
+The dependency matching is performed here on the prototypes, but it can also be performed on names.
 
 ### Named dependencies
 You have the ability to give names to dependencies to avoid collisions. You have to use another annotation, `NamedInjection`:
-```
+```TypeScript
 class MyClass {
 	@Deps.NamedInjection("some_name", MyDependency)
 	private attr: MyDependency;
 }
 ```
 Then, you can add the values to the context by specifying their name:
+```TypeScript
+	context.addNamedValue(new MyDependency(), "some_name");
+	// or an equivalent syntax:
+	context.addValue(new MyDependency(), "some_name");
 ```
-context.addNamedValue(new MyDependency(), "some_name");
-// or an equivalent syntax:
-context.addValue(new MyDependency(), "some_name");
+
+```TypeScript
+	class MyClass {
+		@Deps.NamedInjection("my dep", MyDependency)
+		public dep: MyDependency;
+	}
+
+	context.addValue(dep, "my dep");
+	context.addValue(instance, "an instance");
 ```
+
+## Inheritance
+Of course, the resolution support inheritance in the dependencies.
+
+*Example*
+```TypeScript
+	class Dep2 extends MyDependency {
+		// empty class
+	}
+```	
+*Dep2* instances will be successfully matched as a *MyDependency* during the resolution.
+
 
 ### Injecting primitives
 You can inject primitive types by name the same way you do with class instances.
 The only thing you have to do is adding them to the context:
+```TypeScript
+	context.addValue(1, "attr1");				// number
+	context.addValue("message", "attr2");		// string
+	context.addValue(true, "attr3");			// boolean
+	context.addValue(function() {				// function
+		console.log("Hello, I was injected !");
+	}, "attr4");
 ```
-context.addValue(1, "attr1");				// number
-context.addValue("message", "attr2");		// string
-context.addValue(true, "attr3");			// boolean
-context.addValue(function() {				// function
-	console.log("Hello, I was injected !");
-}, "attr4");
-```
-Currently, there no way of specifying a primitive type in the annotation (like this `@Deps.NamedInjection("attr1", "number")` but this feature is **in the todo list**!
+**Note**: As primitive types do not have a prototype, there is currently no way of directly specifying its type in the annotation. I'm currently working on a solution using *strings* parameters (like this: `@Deps.NamedInjection("attr1", "number")`) but this is experimental.
 
 ### Strict resolution
 By default, when you call `context.resolve()`, if a dependency is not found in the context, nothing happens and the class attribute is `undefined` (or whatever default value you provided).
@@ -105,7 +135,7 @@ There are two probable causes of ambiguous context error :
 ### Self-injection & same-name injection requests
 The injection system will **prevent an instance from injecting into itself** (_"why ?"_).
 The benefit of this is that it will **allow** you to have **two instances with the same name and same type in the same context**, to make them cross-inject into one another,
-```
+```TypeScript
 class SelfInjectingClass {
 	@Deps.NamedInjection("a_friend", SelfInjectingClass)
 	public dep: SelfInjectingClass;
@@ -119,17 +149,23 @@ context.addValue(self2, "a_friend");
 context.resolve(); 	// no error! :)
 ```
 
-**Note.** It is also possible to use an non-named injection annotation:
-```
-@Deps.Injection(SelfInjectingClass)
-public dep: SelfInjectingClass;
+**Note.** It is also possible to use an non-named injection annotation in the class declaration:
+```TypeScript
+	@Deps.Injection(SelfInjectingClass)
+	public dep: SelfInjectingClass;
 ```
 
+###Author
+Tom Guillermin, [http://www.tomsdev.com](www.tomsdev.com)
 
 ##todo list
 
  - ~~named dependencies~~
  - ~~strict context resolution (optional)~~
  - ~~unit tests~~
- - primitive injection by type declaration ("number"/"string"/"boolean")
+ -  primitive injection by type declaration ("number"/"string"/"boolean")
+ -  ~~singleton dependency~~ magic ~~injection~~ (define getter?)
+ - context extension : be able to "copy" a context, and add values into this "child" context, without reaffecting 
+ values from  the parent context. Example: server context -> match context -> player context
  - proper *package.json*
+ - Documentation : exemple of Annotation wrapping.
