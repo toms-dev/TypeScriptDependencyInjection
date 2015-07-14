@@ -1,5 +1,9 @@
 #TypeScript dependency injection library [![Build Status](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection.svg?branch=master)](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection)
-This library allows you to easily declare and resolve dependencies in your classes attributes using eye-candy TypeScript annotations.
+This library allows you to easily declare and resolve dependencies, injecting them in your classes attributes, using eye-candy TypeScript annotations.
+
+*Author:* Tom Guillermin - [http://www.tomsdev.com](www.tomsdev.com)
+
+[(Shortcut to "Getting started" section)](#getting-started)
 
 ##Requirements
 
@@ -8,26 +12,26 @@ This library allows you to easily declare and resolve dependencies in your class
  
 ##Who is it for?
 
-This library is primarily aimed at framework developers but any programmers that want clean and concise code will surely enjoy it too! It's a great way to reduce redundant boilerplate code.
+This library is primarily aimed at framework developers but any programmer that want clean and concise code will surely enjoy it too! It's a great way to reduce redundant boilerplate code.
 
-**Notice:** This is a work-in-progress and many features are missing for now (liked named dependencies) and the package.json is incomplete.
 
-**Side-note about the terminology:** The official term of the `@Something` syntax in TypeScript is "decorator", but I might inadvertently call it "annotation" quite frequently (like in Java for instance).
-
-##So... dependency injection?
-
-Dependency injection allows you to reduce code coupling by **dynamically setting ("injecting") variables** where they need to be.
-
-For example, let's say I'm writing some controllers and I want to be able to send emails from them. I can write an `EmailService` class and provide dynamically its instances to any controller that requests it.
-Dependency injection will allow me to have a clean and unified syntax for both requesting and providing the `EmailService` (see below for an example).
+**Side-note about the terminology:** The official term of the `@Something` syntax in TypeScript is "decorator", but I might inadvertently call it "annotation" quite frequently.
 
 ##Features
 
 - **Powerful**. Resolves dependencies by prototype and/or name.
 - **Concise**. Using TypeScript annotations will be a real pleasure for your eyes. I promise.
-- **Expressive**. By declaring multiple contexts, you have fine control of the resolution process/ 
+- **Expressive**. By declaring multiple contexts, you have fine control of the resolution process.
 - **Safe**. The solver automatically detects ambiguous contexts and prevent unexpected behaviors.
-- declaration of different contexts to avoid collisions
+- **Forgiving.** Even if you forget an annotation (eg. @DirectLoad), the framework will warn you and find a way around to make things work.
+
+##umh... dependency injection?
+
+Dependency injection allows you to reduce coupling by **dynamically setting ("injecting") variables** where they need to be.
+
+For example, let's say I'm writing some controllers and I want to be able to send emails from them. I can write an `EmailService` class and provide dynamically its instance to any controller that requests it.
+Dependency injection will allow me to have a clean and unified syntax for both requesting and providing the `EmailService` (see below for an example).
+
 
 
 ##Getting started
@@ -36,6 +40,9 @@ First you have to import the library using:
 ```TypeScript
 	import Deps = require('./lib/Deps');
 ```
+
+
+###Manual context resolution
 
 Then, you can declare a dependency using the following annotation:
 ```TypeScript
@@ -120,6 +127,34 @@ The only thing you have to do is adding them to the context:
 ```
 **Note**: As primitive types do not have a prototype, there is currently no way of directly specifying its type in the annotation. I'm currently working on a solution using *strings* parameters (like this: `@Deps.NamedInjection("attr1", "number")`) but this is experimental.
 
+###Automatic injection for singletons
+
+If you have some singletons classes, you may want to expose them at various places in your code.
+This library allows you to automatically instantiate and inject singleton without having anything to do except annotating your class!
+
+First, declare your singleton:
+```TypeScript
+@Deps.Singleton
+class MySingleton {
+	public singletonMethod(): void {
+        console.log("Hello!");
+	}
+}
+```
+
+Then, request it:
+```TypeScript
+class MyClass {
+	@Deps.AutoInject(MySingleton)
+	public attr: MySingleton;
+}
+```
+And that's it! The singleton is available on every instance of `MyClass`:
+```TypeScript
+	var a = new MyClass();
+	a.attr.singletonMethod();  // prints "Hello!" in the console
+```
+
 ### Strict resolution
 By default, when you call `context.resolve()`, if a dependency is not found in the context, nothing happens and the class attribute is `undefined` (or whatever default value you provided).
 You may want to ensure that all the dependencies were met. To do so, you can use `context.resolveStrict()` or `context.resolve(true)`. The injection system will throw an exception if something's missing.
@@ -155,8 +190,6 @@ context.resolve(); 	// no error! :)
 	public dep: SelfInjectingClass;
 ```
 
-###Author
-Tom Guillermin, [http://www.tomsdev.com](www.tomsdev.com)
 
 ##todo list
 
@@ -164,8 +197,9 @@ Tom Guillermin, [http://www.tomsdev.com](www.tomsdev.com)
  - ~~strict context resolution (optional)~~
  - ~~unit tests~~
  -  primitive injection by type declaration ("number"/"string"/"boolean")
- -  ~~singleton dependency~~ magic ~~injection~~ (define getter?)
+ -  ~~singleton dependency magic injection
  - context extension : be able to "copy" a context, and add values into this "child" context, without reaffecting 
  values from  the parent context. Example: server context -> match context -> player context
  - proper *package.json*
- - Documentation : exemple of Annotation wrapping.
+ - Documentation : example of Annotation wrapping for framework developpers.
+- register user-created singletons

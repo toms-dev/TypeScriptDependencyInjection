@@ -4,11 +4,9 @@ export import Config = Deps.Config;
 
 @Deps.Singleton
 export class MySingleton {
-
 	public singletonMethod(): void {
-
+		console.log("Hello!");
 	}
-
 }
 
 //@Deps.AutoLoad
