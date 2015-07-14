@@ -1,5 +1,7 @@
 import Deps = require('../index');
 
+export import Config = Deps.Config;
+
 @Deps.Singleton
 export class MySingleton {
 
@@ -22,7 +24,7 @@ export class MyClass {
 }
 
 @Deps.DirectLoad
-export class MyClassWithAutoLoad {
+export class MyClassWithDirectLoad {
 
 	@Deps.AutoInject(MySingleton)
 	public attr: MySingleton; // = null;

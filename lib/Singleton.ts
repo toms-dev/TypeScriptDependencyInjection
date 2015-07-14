@@ -12,7 +12,9 @@ class Singleton<T> {
 	}
 
 	public get(): T {
+		console.log("Getting singleton!");
 		if (! this.instance) {
+			console.log("Creating new instance!");
 			this.instance = new (this.construct)();
 		}
 
