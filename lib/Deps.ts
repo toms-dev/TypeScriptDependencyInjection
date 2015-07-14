@@ -13,5 +13,3 @@ export var DirectLoad = Inject.DirectLoad;
 export import Singleton = require('./annotations/SingletonAnnotation');
 
 export import Config = require('./Config');
-
-console.log("Inject:", Inject);

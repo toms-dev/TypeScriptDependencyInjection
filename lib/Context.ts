@@ -1,3 +1,5 @@
+/// <reference path="../typings/tsd.d.ts" />
+
 import DependencyInjector = require('./Injector');
 
 import ProvidedDependency = require('./ProvidedDependency');
@@ -5,6 +7,9 @@ import PrototypeProvidedDependency = require('./PrototypeProvidedDependency');
 import NamedProvidedDependency = require('./NamedProvidedDependency');
 
 import InjectionRequest = require('./InjectionRequest');
+
+import log4js = require('log4js');
+var logger = log4js.getLogger("Context");
 
 /**
  * Data class to hold the link between request and instance
@@ -43,7 +48,7 @@ class DependencyInjectionContext {
 
 	public addValue(instance:any, name?: string):void {
 		if (name) {
-			console.log("Adding named dep: ", name);
+			logger.debug("Adding named dep: {}", name);
 			this.addNamedValue(instance, name);
 			//this.providedDependencies.push(new NamedProvidedDependency(instance, name));
 		} else {

@@ -9,14 +9,13 @@ export class MySingleton {
 	}
 }
 
-//@Deps.AutoLoad
 export class MyClass {
 
 	@Deps.AutoInject(MySingleton)
-	public attr: MySingleton; // = null;
+	public attr: MySingleton;
 
 	public myMethod(): void {
-
+		console.log("This is my method!");
 	}
 
 }
@@ -28,7 +27,7 @@ export class MyClassWithDirectLoad {
 	public attr: MySingleton; // = null;
 
 	public myMethod(): void {
-
+		console.log("This is another method!");
 	}
 
 }

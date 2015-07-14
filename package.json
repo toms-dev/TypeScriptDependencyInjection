@@ -1,8 +1,9 @@
 {
   "name": "ts-dependency-injection",
-  "version": "0.1",
+  "version": "1.0.0",
   "author": "Tom Guillermin <tom@tomsdev.com>",
   "dependencies": {
+    "log4js": "^0.6.26",
     "reflect-metadata": "^0.1.0",
     "tsd": "^0.6.3"
   },

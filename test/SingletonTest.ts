@@ -43,12 +43,12 @@ describe("Singleton unit test", () => {
 				before(() => {
 					Deps.Config.useGetters = false;
 					test = require('../test-resources/UsingSingleton');
-					warningSpy = sinon.spy(console, "warn");
+					var log4js = require('log4js');
+					var loggerInjector = log4js.getLogger();
+					warningSpy = sinon.spy(loggerInjector, "warn");
 				});
 
 				it("should contains the injected attributes in the keys after a getter call", () => {
-					console.log(Deps.Config.useGetters);
-					assert.equal(test.Config, Deps.Config, "Configs should be the same");
 					var a = new test.MyClass();
 					assert.isTrue(Object.keys(a).indexOf("attr") == -1, "The key is not set yet");
 					a.attr;	// trigger the loading

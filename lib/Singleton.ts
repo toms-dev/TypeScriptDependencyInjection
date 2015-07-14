@@ -1,4 +1,7 @@
+/// <reference path="../typings/tsd.d.ts" />
 
+import log4js = require('log4js');
+var log = log4js.getLogger();
 
 class Singleton<T> {
 
@@ -12,9 +15,9 @@ class Singleton<T> {
 	}
 
 	public get(): T {
-		console.log("Getting singleton!");
+		log.debug("Getting singleton!");
 		if (! this.instance) {
-			console.log("Creating new instance!");
+			log.debug("Creating new instance!");
 			this.instance = new (this.construct)();
 		}
 

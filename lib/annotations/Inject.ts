@@ -1,4 +1,5 @@
 /// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 
 import 'reflect-metadata';
 import InjectionRequest = require('../InjectionRequest');
@@ -8,6 +9,9 @@ import NamedInjectionRequest = require('../NamedInjectionRequest');
 import Singleton = require('../Singleton');
 
 import Config = require('../Config');
+
+import log4js = require('log4js');
+var log = log4js.getLogger();
 
 export function Injection(typeToInject) {
 	return function (target:Object, propertyKey:string | symbol) {
@@ -23,30 +27,26 @@ export function NamedInjection(name, typeToInject?) {
 }
 
 export function AutoInject(dependencyClass) {
-	console.log("Auto inject");
+	log.debug("Auto inject");
 	if (!dependencyClass) throw new Error("Missing parameter!");
 	return function (prototype, propertyKey) {
-		console.log("\tOn "+propertyKey+" as "+dependencyClass.name);
+		log.debug("\tOn "+propertyKey+" as "+dependencyClass.name);
 
 		// We define this as a safeguard if the user doesn't call @DirectLoad
 		Object.defineProperty(prototype, propertyKey, {
 			get: function () {
 				// If we don't have to use getters, we'll use the first call to inject
 				// all the values
-				console.log("Calling getter! ", Config.useGetters);
+				log.debug("Calling getter! ", Config.useGetters);
 				if (! Config.useGetters) {
-					console.log("derp");
 					var isInjected = Reflect.getOwnMetadata("isInjected", prototype) ? true : false;
 					if (! isInjected) {
-						console.warn("Warning: Config.useGetters=false but the @"+(<any>DirectLoad).name+" decorator" +
-							" was" +
-							" not put on the class " +prototype.constructor.name+".");
-						//console.log("Prototype of "+prototype.constructor.name+" was not injected!");
+						log.warn("Config.useGetters=false but the @"+(<any>DirectLoad).name+" decorator" +
+							" was not put on the class " +prototype.constructor.name+".");
 						removeGettersFromPrototype(prototype);
 						autoLoadInjectors(this, prototype);
 					}
 				}
-				//console.log("This=", this);
 				return Singleton.getSingleton(dependencyClass).get()
 			},
 			enumerable: true,
@@ -60,7 +60,6 @@ export function AutoInject(dependencyClass) {
 		};
 		Reflect.defineMetadata("singletonInjectors", singletons, prototype);
 
-		// TODO: overload constructor?
 		return prototype;
 	}
 }
@@ -75,7 +74,6 @@ function loadSingletonInjectors(singletonInjectors, target) {
 	for (var propertyKey in singletonInjectors) {
 		if (!singletonInjectors.hasOwnProperty(propertyKey)) continue;
 		var s = singletonInjectors[propertyKey];
-		console.log("Loading");
 		s.apply(target);
 	}
 }
@@ -84,8 +82,7 @@ function removeGettersFromPrototype(proto) {
 	var singletonInjectors:{[propertyKey: string]: any} = Reflect.getOwnMetadata("singletonInjectors", proto) || {};
 	for (var propertyKey in singletonInjectors) {
 		if (!singletonInjectors.hasOwnProperty(propertyKey)) continue;
-		// TODO YOU ARE HERE: delete key from proto
-		console.log("\tDeleting proto: "+propertyKey);
+		log.debug("\tDeleting proto: "+propertyKey);
 		if (! delete proto[propertyKey]) {
 			throw new Error("Failed to delete property getter!");
 		}
@@ -93,7 +90,7 @@ function removeGettersFromPrototype(proto) {
 }
 
 export function DirectLoad(constructor):any {
-	console.log("Auto load...");
+	log.trace("Direct load of "+constructor.name);
 	var proto = constructor.prototype;
 
 	// Remove the getter override

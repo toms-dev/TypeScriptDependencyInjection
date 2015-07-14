@@ -1,13 +1,17 @@
 /// <reference path="../node_modules/reflect-metadata/reflect-metadata.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 
 import 'reflect-metadata';
 import InjectionRequest = require('./InjectionRequest');
 import ProvidedDependency = require('./ProvidedDependency');
 
+import log4js = require('log4js');
+var log = log4js.getLogger();
+
 class DependencyInjector {
 
 	public static getRequests(target:ProvidedDependency):InjectionRequest[] {
-		console.log("Target:", target.getInstance());
+		log.debug("Target:", target.getInstance());
 		var instance = target.getInstance();
 
 		// Skip primitive objects
@@ -19,7 +23,7 @@ class DependencyInjector {
 		var DEP_INJ_REQUESTS_KEY = "dependencyInjection.requests";
 		var requests:InjectionRequest[] = Reflect.getMetadata(DEP_INJ_REQUESTS_KEY, proto); //proto.__injectionRequests || [];
 		if (requests) {
-			console.log("Requests of " + proto.constructor.name + ":", requests.length);
+			log.debug("Requests of " + proto.constructor.name + ":", requests.length);
 		}
 		return requests ? requests : [];
 	}
@@ -39,7 +43,7 @@ class DependencyInjector {
 				matchingDeps.push(d);
 			}
 		}
-		console.log(matchingDeps.length + " matching requests for ", providedInstance.getInstance().constructor.name);
+		log.debug(matchingDeps.length + " matching requests for ", providedInstance.getInstance().constructor.name);
 		// Throw an error if more than one dependency matches the request, as the context is ambiguous.
 		if (matchingDeps.length > 1) {
 			throw new Error("Ambiguous context with " + matchingDeps.length + " matching dependencies.");
@@ -50,7 +54,7 @@ class DependencyInjector {
 			if (strict) {
 				throw new Error(message);
 			} else {
-				console.log("WARN: " + message);
+				log.warn("WARN: " + message);
 			}
 			return;
 		}
