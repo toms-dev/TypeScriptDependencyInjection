@@ -1,4 +1,4 @@
-#TypeScript dependency injection library
+#TypeScript dependency injection library [![Build Status](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection.svg?branch=master)](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection)
 This library allows you to easily declare and resolve dependencies in your classes attributes using eye-candy TypeScript annotations.
 
 ##Requirements
