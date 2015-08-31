@@ -38,10 +38,10 @@ Dependency injection will allow me to have a clean and unified syntax for both r
 
 First you have to install the library with NPM:
 ```bash
-npm install ts-dependency-injection --save
+$ npm install ts-dependency-injection --save
 ```
 
-Then import the library in your code using:
+Then import the library in your TypeScript code using:
 
 ```TypeScript
 	import Deps = require('ts-dependency-injection'');
@@ -99,11 +99,12 @@ Then, you can add the values to the context by specifying their name:
 ```
 
 ```TypeScript
-	class MyClass {
-		@Deps.NamedInjection("my dep", MyDependency)
-		public dep: MyDependency;
-	}
+class MyClass {
+	@Deps.NamedInjection("my dep", MyDependency)
+	public dep: MyDependency;
+}
 
+// [...] later in the code:
 	context.addValue(dep, "my dep");
 	context.addValue(instance, "an instance");
 ```
@@ -113,9 +114,9 @@ Of course, the resolution support inheritance in the dependencies.
 
 *Example*
 ```TypeScript
-	class Dep2 extends MyDependency {
-		// empty class
-	}
+class Dep2 extends MyDependency {
+	// empty class
+}
 ```	
 *Dep2* instances will be successfully matched as a *MyDependency* during the resolution.
 
