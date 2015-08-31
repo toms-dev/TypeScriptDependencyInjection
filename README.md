@@ -36,9 +36,15 @@ Dependency injection will allow me to have a clean and unified syntax for both r
 
 ## Getting started
 
-First you have to import the library using:
+First you have to install the library with NPM:
+```bash
+npm install ts-dependency-injection --save
+```
+
+Then import the library in your code using:
+
 ```TypeScript
-	import Deps = require('./lib/Deps');
+	import Deps = require('ts-dependency-injection'');
 ```
 
 
