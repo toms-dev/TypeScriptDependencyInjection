@@ -1,6 +1,6 @@
 {
   "name": "ts-dependency-injection",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Tom Guillermin <tom@tomsdev.com>",
   "dependencies": {
     "log4js": "^0.6.26",
@@ -32,7 +32,9 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "lib/"
+    "index.ts",
+    "typings.d.ts",
+    "lib/",
+    "typings/"
   ]
 }
