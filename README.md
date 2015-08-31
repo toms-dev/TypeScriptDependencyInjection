@@ -1,23 +1,24 @@
-#TypeScript dependency injection library [![Build Status](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection.svg?branch=master)](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection)
+# TypeScript dependency injection library [![Build Status](https://travis-ci
+.org/toms-dev/TypeScriptDependencyInjection.svg?branch=master)](https://travis-ci.org/toms-dev/TypeScriptDependencyInjection)
 This TypeScript library allows you to easily declare and resolve dependencies, injecting them in your classes attributes, using eye-candy TypeScript annotations.
 
 *Author:* Tom Guillermin - [http://www.tomsdev.com](http://www.tomsdev.com)
 
 [(Shortcut to "Getting started" section)](#getting-started)
 
-##Requirements
+## Requirements
 
  - TypeScript compiler 1.5 or higher
  - EcmaScript5-compliant engine (nodejs versions >= .0.10 will do fine)
  
-##Who is it for?
+## Who is it for?
 
 This library is primarily aimed at framework developers but any programmer that want clean and concise code will surely enjoy it too! It's a great way to reduce redundant boilerplate code.
 
 
 **Side-note about the terminology:** The official term of the `@Something` syntax in TypeScript is "decorator", but I might inadvertently call it "annotation" quite frequently.
 
-##Features
+## Features
 
 - **Powerful**. Resolves dependencies by prototype and/or name.
 - **Concise**. Using TypeScript annotations will be a real pleasure for your eyes. I promise.
@@ -25,7 +26,7 @@ This library is primarily aimed at framework developers but any programmer that 
 - **Safe**. The solver automatically detects ambiguous contexts and prevent unexpected behaviors.
 - **Forgiving.** Even if you forget an annotation (eg. @DirectLoad), the framework will warn you and find a way around to make things work.
 
-##umh... dependency injection?
+## umh... dependency injection?
 
 Dependency injection allows you to reduce coupling by **dynamically setting ("injecting") variables** where they need to be.
 
@@ -34,7 +35,7 @@ Dependency injection will allow me to have a clean and unified syntax for both r
 
 
 
-##Getting started
+## Getting started
 
 First you have to import the library using:
 ```TypeScript
@@ -42,7 +43,7 @@ First you have to import the library using:
 ```
 
 
-###Manual context resolution
+### Manual context resolution
 
 Then, you can declare a dependency using the following annotation:
 ```TypeScript
@@ -127,7 +128,7 @@ The only thing you have to do is adding them to the context:
 ```
 **Note**: As primitive types do not have a prototype, there is currently no way of directly specifying its type in the annotation. I'm currently working on a solution using *strings* parameters (like this: `@Deps.NamedInjection("attr1", "number")`) but this is experimental.
 
-###Automatic injection for singletons
+### Automatic injection for singletons
 
 If you have some singletons classes, you may want to expose them at various places in your code.
 This library allows you to automatically instantiate and inject singleton without having anything to do except annotating your class!
@@ -191,7 +192,7 @@ context.resolve(); 	// no error! :)
 ```
 
 
-##todo list
+## todo list
 
  - ~~named dependencies~~
  - ~~strict context resolution (optional)~~
@@ -200,6 +201,5 @@ context.resolve(); 	// no error! :)
  -  ~~singleton dependency magic injection
  - context extension : be able to "copy" a context, and add values into this "child" context, without reaffecting 
  values from  the parent context. Example: server context -> match context -> player context
- - proper *package.json*
  - Documentation : example of Annotation wrapping for framework developpers.
 - register user-created singletons
