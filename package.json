@@ -6,11 +6,12 @@
   "dependencies": {
     "log4js": "^0.6.26",
     "reflect-metadata": "^0.1.0",
-    "tsd": "^0.6.3"
+    "tsd": "^0.6.3",
+    "typescript": "^1.5.3"
   },
   "scripts": {
     "test": "mocha bin/test",
-    "install": "tsd reinstall ; tsd rebundle ;",
+    "install": "tsd reinstall ; tsd rebundle ; tsc ;",
     "postinstall": "tsc"
   },
   "engines": {
