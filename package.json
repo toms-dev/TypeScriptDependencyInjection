@@ -11,8 +11,7 @@
   },
   "scripts": {
     "test": "mocha bin/test",
-    "install": "tsd reinstall ; tsd rebundle ; tsc ;",
-    "postinstall": "tsc"
+    "install": "tsd reinstall ; tsd rebundle ; tsc ;"
   },
   "engines": {
     "node": ">= 0.10.0"
