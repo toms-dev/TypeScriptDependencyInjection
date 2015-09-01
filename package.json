@@ -10,8 +10,8 @@
   },
   "scripts": {
     "test": "mocha bin/test",
-    "preinstall": "tsd reinstall ; tsd rebundle ;",
-    "install": "tsc"
+    "install": "tsd reinstall ; tsd rebundle ;",
+    "postinstall": "tsc"
   },
   "engines": {
     "node": ">= 0.10.0"
