@@ -9,7 +9,9 @@
     "tsd": "^0.6.3"
   },
   "scripts": {
-    "test": "mocha bin/test"
+    "test": "mocha bin/test",
+    "preinstall": "tsd reinstall ; tsd rebundle ;",
+    "install": "tsc"
   },
   "engines": {
     "node": ">= 0.10.0"
