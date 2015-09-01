@@ -1,6 +1,6 @@
 {
   "name": "ts-dependency-injection",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "author": "Tom Guillermin <tom@tomsdev.com>",
   "description": "This TypeScript library allows you to easily declare and resolve dependencies, injecting them inyour classes attributes, using eye-candy TypeScript annotations.",
   "dependencies": {
@@ -9,7 +9,7 @@
     "tsd": "^0.6.3"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha bin/test"
   },
   "engines": {
     "node": ">= 0.10.0"

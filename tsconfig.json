@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "outDir": "./bin",
+    "sourceMap": true,
+    "target": "ES5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "files": [
+    "index.ts",
+    "test/ContextTest.ts",
+    "test/NamedInjectionTest.ts",
+    "test/PrototypeInjectionTest.ts",
+    "test/SingletonTest.ts",
+    "test-resources/UsingSingleton.ts"
+  ]
+}
