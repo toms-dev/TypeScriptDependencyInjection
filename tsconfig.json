@@ -15,5 +15,8 @@
     "test/PrototypeInjectionTest.ts",
     "test/SingletonTest.ts",
     "test-resources/UsingSingleton.ts"
-  ]
+  ],
+  "typescript": {
+    "definition": "typings.d.ts"
+  }
 }
