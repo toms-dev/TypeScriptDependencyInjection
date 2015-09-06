@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "experimentalDecorators": true
+  },
+  "files":[
+    "UsingSingleton.ts"
+  ]
+}

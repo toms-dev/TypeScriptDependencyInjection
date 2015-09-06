@@ -4,5 +4,9 @@
  * MIT Licensed
  */
 'use strict';
-import Deps = require('./lib/Deps');
-export = Deps;
+/*import Deps = require('./lib/Deps');
+export = Deps;*/
+
+import * as Deps from './lib/Deps';
+
+export default Deps;

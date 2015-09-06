@@ -1,4 +1,7 @@
-import Deps = require('../index');
+/// <reference path="../typings.d.ts" />
+
+import Deps = require('ts-dependency-injection');
+//import Deps = require('../index');
 
 export import Config = Deps.Config;
 
