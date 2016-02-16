@@ -56,7 +56,7 @@ Then, you can declare a dependency using the following annotation:
 ```TypeScript
 class MyClass {
 
-	@Deps.Inject(MyDependency)
+	@Deps.Injection(MyDependency)
 	public dep: MyDependency;
 
 }
