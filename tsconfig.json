@@ -2,9 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitAny": false,
-    "outDir": "./bin",
+    "outDir": "./build",
     "sourceMap": true,
     "target": "ES5",
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
@@ -15,8 +16,5 @@
     "test/PrototypeInjectionTest.ts",
     "test/SingletonTest.ts",
     "test-resources/UsingSingleton.ts"
-  ],
-  "typescript": {
-    "definition": "typings.d.ts"
-  }
+  ]
 }

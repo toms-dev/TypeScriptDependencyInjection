@@ -1,0 +1,13 @@
+{
+  "name": "ts-dependency-injection",
+  "ambientDependencies": {
+    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#625cd68fed45e3230393af71bcde1d36706f3d56",
+    "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#625cd68fed45e3230393af71bcde1d36706f3d56",
+    "sinon": "github:DefinitelyTyped/DefinitelyTyped/sinon/sinon.d.ts#625cd68fed45e3230393af71bcde1d36706f3d56",
+    "log4js": "github:DefinitelyTyped/DefinitelyTyped/log4js/log4js.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
+    "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
+    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc"
+  }
+}

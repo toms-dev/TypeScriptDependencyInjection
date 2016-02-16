@@ -1,5 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import DependencyInjector = require('./Injector');
 
 import ProvidedDependency = require('./ProvidedDependency');
