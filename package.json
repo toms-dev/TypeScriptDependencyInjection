@@ -19,7 +19,7 @@
   "scripts": {
     "test": "mocha build/test",
     "make-dev": "typings install; tsc;",
-    "2prepublish": "typings install; tsc;"
+    "prepublish": "typings install; tsc;"
   },
   "engines": {
     "node": ">= 0.10.0"
