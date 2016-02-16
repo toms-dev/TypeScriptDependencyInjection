@@ -1,5 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import log4js = require('log4js');
 var log = log4js.getLogger();
 

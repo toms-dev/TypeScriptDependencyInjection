@@ -15,6 +15,7 @@
     "test/NamedInjectionTest.ts",
     "test/PrototypeInjectionTest.ts",
     "test/SingletonTest.ts",
-    "test-resources/UsingSingleton.ts"
+    "test-resources/UsingSingleton.ts",
+    "typings/main.d.ts"
   ]
 }

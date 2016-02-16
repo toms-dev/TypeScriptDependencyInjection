@@ -5,7 +5,5 @@
  */
 'use strict';
 
-/// <reference path="./typings/main.d.ts" />
-
 import Deps = require('./lib/Deps');
 export = Deps;
