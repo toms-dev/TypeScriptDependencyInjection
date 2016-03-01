@@ -8,6 +8,7 @@
     "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
     "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
     "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
-    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc"
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#a213223e1bdf40b280ebf765b42e7ef3da9394dc",
+    "reflect-metadata":"github:rbuckton/ReflectDecorators/reflect-metadata.d.ts"
   }
 }

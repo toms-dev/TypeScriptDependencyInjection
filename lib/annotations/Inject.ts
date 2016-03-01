@@ -1,5 +1,3 @@
-/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts" />
-
 import 'reflect-metadata';
 import InjectionRequest = require('../InjectionRequest');
 import PrototypeInjectionRequest = require('../PrototypeInjectionRequest');
