@@ -1,6 +1,6 @@
 {
   "name": "ts-dependency-injection",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Tom Guillermin <tom@tomsdev.com>",
   "description": "This TypeScript library allows you to easily declare and resolve dependencies, injecting them inyour classes attributes, using eye-candy TypeScript annotations.",
   "main": "build/index.js",
